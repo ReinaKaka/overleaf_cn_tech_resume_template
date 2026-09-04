@@ -1,0 +1,369 @@
+% !TeX program = xelatex
+\documentclass[11pt,a4paper]{ctexart}
+
+\usepackage[margin=1.35cm]{geometry}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{ifthen}
+
+\pagenumbering{gobble}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\emergencystretch}{2em}
+\linespread{1.08}
+\urlstyle{same}
+
+% ==========================================================
+% 主题色
+% ==========================================================
+\definecolor{ResumeAccent}{HTML}{C7000A}
+\definecolor{TextBlack}{HTML}{202124}
+\definecolor{TextGray}{HTML}{60646C}
+\definecolor{LightGray}{HTML}{D9DCE1}
+
+\color{TextBlack}
+
+% ==========================================================
+% 列表样式
+% ==========================================================
+\setlist[itemize]{
+  leftmargin=1.35em,
+  label=\textcolor{ResumeAccent}{\small$\bullet$},
+  itemsep=3.2pt,
+  topsep=3pt,
+  parsep=0pt,
+  partopsep=0pt
+}
+
+\newenvironment{compactitems}
+  {\begin{itemize}[
+    leftmargin=1.35em,
+    itemsep=1.4pt,
+    topsep=0pt,
+    parsep=0pt,
+    partopsep=0pt
+  ]}
+  {\end{itemize}}
+
+% ==========================================================
+% 自定义模块
+% ==========================================================
+\newcommand{\resumeSection}[1]{%
+  \par\vspace{0.58em}
+  \noindent
+  {\fontsize{14.2pt}{16.5pt}\selectfont\bfseries
+    \textcolor{ResumeAccent}{\raisebox{-0.10em}{\rule{3.8pt}{1.04em}}}
+    \hspace{0.48em}#1
+  }
+  \par\vspace{-0.40em}
+  \textcolor{ResumeAccent}{\rule{\textwidth}{0.58pt}}
+  \par\vspace{0.10em}
+}
+
+\newcommand{\dateText}[1]{%
+  {\small\textcolor{TextGray}{\mbox{#1}}}%
+}
+
+\newcommand{\datedsubsection}[2]{%
+  \noindent
+  \begin{tabularx}{\textwidth}
+    {@{}>{\raggedright\arraybackslash}X
+        r@{}}
+    #1 & \dateText{#2}
+  \end{tabularx}
+  \vspace{-0.18em}
+}
+
+\newcommand{\projectHeader}[3]{%
+  \par\vspace{0.36em}
+  \noindent
+  \begin{tabularx}{\textwidth}
+    {@{}>{\raggedright\arraybackslash}X
+        >{\centering\arraybackslash}p{2.2cm}
+        r@{}}
+    {\large\bfseries #1}
+    &
+    {\textcolor{TextGray}{#2}}
+    &
+    {\dateText{#3}}
+  \end{tabularx}
+  \par\vspace{0.12em}
+}
+
+\newcommand{\experienceHeader}[3]{%
+  \par\vspace{0.36em}
+  \noindent
+  \begin{tabularx}{\textwidth}
+    {@{}>{\raggedright\arraybackslash}X
+        >{\centering\arraybackslash}p{2.2cm}
+        r@{}}
+    {\large\bfseries #1}
+    &
+    {\textcolor{TextGray}{#2}}
+    &
+    {\dateText{#3}}
+  \end{tabularx}
+  \par\vspace{0.12em}
+}
+
+\newcommand{\workProject}[1]{%
+  \noindent
+  {\large\bfseries\textcolor{TextBlack}{#1}}
+  \par\vspace{0.18em}
+}
+
+\newcommand{\projectSummary}[1]{%
+  \noindent
+  \textcolor{TextGray}{#1}
+  \par\vspace{0.38em}
+}
+
+\newcommand{\projectTech}[1]{%
+  \noindent
+  {\small
+    \textcolor{ResumeAccent}{\textbf{技术栈}}
+    \hspace{0.6em}
+    \textcolor{TextGray}{#1}
+  }
+  \par\vspace{0.25em}
+}
+
+\newcommand{\githubProject}[2]{%
+  \href{#2}{%
+    \textcolor{TextBlack}{#1}%
+    \,\textcolor{ResumeAccent}{\raisebox{0.15em}{\scriptsize$\nearrow$}}%
+  }%
+}
+
+\newcommand{\skillLabel}[1]{%
+  \textcolor{ResumeAccent}{\textbf{#1}}
+}
+
+% PDF 通常不能直接嵌入 GIF。为避免 Overleaf 报错，这里只自动读取 png/jpg/pdf。
+% 如果你只有 images/you.gif，请先把它另存为 images/you.png。
+\newcommand{\resumePhoto}{%
+  \IfFileExists{images/you.png}{%
+    \includegraphics[width=2.08cm,height=2.62cm,keepaspectratio]{images/you.png}%
+  }{%
+    \IfFileExists{images/you.jpg}{%
+      \includegraphics[width=2.08cm,height=2.62cm,keepaspectratio]{images/you.jpg}%
+    }{%
+      \IfFileExists{images/you.jpeg}{%
+        \includegraphics[width=2.08cm,height=2.62cm,keepaspectratio]{images/you.jpeg}%
+      }{%
+        \IfFileExists{images/you.pdf}{%
+          \includegraphics[width=2.08cm,height=2.62cm,keepaspectratio]{images/you.pdf}%
+        }{%
+          \fcolorbox{LightGray}{white}{%
+            \parbox[c][2.62cm][c]{2.08cm}{\centering\small\textcolor{TextGray}{照片}}%
+          }%
+        }%
+      }%
+    }%
+  }%
+}
+
+\begin{document}
+
+% ==========================================================
+% 顶部个人信息
+% ==========================================================
+\vspace*{-0.90cm}
+
+\noindent
+\begin{minipage}[t]{0.025\textwidth}
+  \vspace{0pt}
+  \textcolor{ResumeAccent}{\rule{4.2pt}{2.56cm}}
+\end{minipage}
+\hspace{0.25em}
+\begin{minipage}[t]{0.72\textwidth}
+  \vspace{0pt}
+
+  {\fontsize{19.5pt}{23pt}\selectfont\bfseries [姓名]}
+
+  \vspace{0.42em}
+
+  {\normalsize
+    \textbf{求职方向：}
+    \textcolor{ResumeAccent}{[目标岗位 A / 目标岗位 B]}
+  }
+
+  \vspace{0.48em}
+
+  \href{tel:+86XXXXXXXXXXX}{(+86) [手机号]}
+  \quad
+  \textcolor{LightGray}{|}
+  \quad
+  \href{mailto:your-email@example.com}{[邮箱地址]}
+
+  \vspace{0.24em}
+
+  GitHub：
+  \href{https://github.com/yourname}
+       {\texttt{github.com/yourname}}
+
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.19\textwidth}
+  \vspace{-0.30cm}
+  \raggedleft
+  \resumePhoto
+\end{minipage}
+
+\vspace{0.08em}
+
+% ==========================================================
+% 教育背景
+% ==========================================================
+\resumeSection{教育背景}
+
+\datedsubsection
+  {\textbf{[学校名称]}，[专业名称]，\textit{[学历/状态]}，GPA：[X.XX/4.0]}
+  {[YYYY.MM-YYYY.MM]}
+\datedsubsection
+  {\textbf{[学校名称]}，[专业名称]，\textit{[学历/状态]}，GPA：[X.XX/4.0]}
+  {[YYYY.MM-YYYY.MM]}
+\begin{itemize}[
+  leftmargin=1.35em,
+  itemsep=1.4pt,
+  topsep=1.5pt,
+  parsep=0pt,
+  partopsep=0pt
+]
+  \item \textbf{研究方向：}[研究方向/细分领域]
+  \item \textbf{荣誉奖项：}[语言成绩/竞赛奖项/科研或项目成果]
+\end{itemize}
+
+% ==========================================================
+% 项目经历
+% ==========================================================
+\resumeSection{项目经历}
+
+\projectHeader
+{
+  \githubProject
+    {[EnglishName]}
+    {https://github.com/yourname/project-a}
+  ｜[项目全称]
+}
+{[个人角色]}
+{[YYYY.MM-YYYY.MM]}
+
+\projectSummary{%
+  面向[目标场景]，构建[系统/平台/工具类型]，用于解决[核心问题]。%
+}
+
+\projectTech{
+  [语言] · [框架] · [数据库/中间件] · [部署/工具]
+}
+
+\begin{itemize}
+
+\item
+\textbf{核心功能：}
+实现[功能 1]、[功能 2]与[功能 3]，支撑[主要业务流程/使用场景]。
+
+\item
+\textbf{技术实现：}
+采用[关键技术/架构方案]完成[核心模块]，解决[技术难点/工程问题]。
+
+\item
+\textbf{项目成果：}
+完成[交付结果/上线状态/开源成果]，[指标名称]达到 \textbf{[指标数值]}。
+
+\end{itemize}
+
+\projectHeader
+{
+  \githubProject
+    {[EnglishName]}
+    {https://github.com/yourname/project-b}
+  ｜[项目全称]
+}
+{[个人角色]}
+{[YYYY.MM-至今]}
+
+\projectSummary{
+  面向[目标场景]，构建[平台/系统/工具]，用于解决[核心问题]。
+}
+
+\projectTech{
+[语言] · [框架] · [领域技术] · [数据库/中间件] · [外部 API]
+}
+
+\begin{itemize}
+
+\item
+\textbf{核心功能：}
+实现[功能 1]、[功能 2]与[功能 3]，覆盖[主要流程/使用场景]。
+
+\item
+\textbf{技术实现：}
+采用[关键技术/架构方案]完成[核心模块]，提升[准确率/稳定性/效率]。
+
+\item
+\textbf{项目成果：}
+完成[交付结果/奖项荣誉/论文专利/开源成果]，当前状态：[已上线/已发表/持续迭代]。
+
+\end{itemize}
+
+\projectHeader
+{
+  \githubProject
+    {[EnglishName]}
+    {https://github.com/yourname/project-c}
+  ｜[项目全称]
+}
+{[个人角色]}
+{[YYYY.MM-YYYY.MM]}
+
+\projectSummary{
+  面向[目标场景]，构建[应用/服务/系统]，用于提升[效率/准确率/体验/稳定性]。
+}
+
+\projectTech{
+[语言] · [框架] · [算法/检索/数据处理] · [数据库/存储] · [部署/监控]
+}
+
+\begin{itemize}
+
+\item
+\textbf{数据处理：}
+完成[数据清洗/结构化切分/元数据标注/特征构建]，形成[数据规模/知识库规模]。
+
+\item
+\textbf{核心链路：}
+设计[检索/推荐/分析/调度]流程，结合[方法 A]与[方法 B]提升[召回/排序/处理效果]。
+
+\item
+\textbf{结果验证：}
+通过[评测集/日志追踪/可视化监控]验证效果，[指标名称]达到 \textbf{[指标数值]}。
+
+\end{itemize}
+
+% ==========================================================
+% 专业技能
+% ==========================================================
+\resumeSection{专业技能}
+
+\begin{itemize}
+
+  \item
+  \skillLabel{后端开发：}
+  [Python/Java/Go]；[FastAPI/Spring Boot]；[RESTful API/SSE/WebSocket]；[Docker/Linux/Git]。
+
+  \item
+  \skillLabel{Agent 与 RAG：}
+  [LangGraph/ReAct/Function Calling]；[MCP/工具调用]；[Hybrid RAG/Rerank/NL2SQL]。
+
+  \item
+  \skillLabel{模型与数据：}
+  [PyTorch/Transformers/PEFT]；[LoRA/SFT/DPO]；[PostgreSQL/MySQL/Redis/Milvus/Neo4j]。
+
+\end{itemize}
+
+\end{document}
